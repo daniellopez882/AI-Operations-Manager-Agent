@@ -1,162 +1,147 @@
-<div align="center">
+# OpsManager — operations dashboard prototype
 
-# 🤖 AI Operations Manager Agent
-### **OpsManager** — 24/7 Autonomous Workflow Intelligence Platform
+[![CI](https://github.com/daniellopez882/AI-Operations-Manager-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/daniellopez882/AI-Operations-Manager-Agent/actions/workflows/ci.yml)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-<br/>
+A front-end prototype of an operations dashboard: an executive overview,
+an SOP scoring screen, a live-looking event feed, and a settings page —
+React 18, TypeScript, Tailwind, Framer Motion, built with Vite.
 
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://framer.com/motion)
-[![Vite](https://img.shields.io/badge/Vite-5.1-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
+> **What it is not.** There is no backend, no model and no integration.
+> Every number on screen is generated in the browser by
+> [`src/lib/simulation.ts`](src/lib/simulation.ts), and the page says so.
+> The previous README described a "24/7 Autonomous Workflow Intelligence
+> Platform" with a "real-time perception-action loop"; `package.json` has no
+> HTTP client and no model SDK. See [ADR 0002](docs/adr/0002-say-what-it-is.md).
 
-<br/>
+## At a glance
 
-> *"Stop watching dashboards. Start running a living, autonomous operations brain."*
+| | |
+|---|---|
+| **Is** | Four screens of a dashboard UI over a `DataSource` interface whose only implementation is an in-browser simulation |
+| **Data seam** | `DataSource` (catalogues + two subscriptions + a `status` that reports `simulation` or `live`) — a backend would implement it; nothing in the UI would change |
+| **Tests** | 23 — components rendered with a hand-driven source; the simulation with a seeded generator and fake timers; one test pins "renders without console warnings" |
+| **CI** | eslint · `tsc` · vitest · build · bundle-has-no-third-party-URLs check · `npm audit --audit-level=high` · gitleaks · container: non-root, `/healthz`, SPA fallback, CSP and frame headers |
 
-**OpsManager** replaces static, passive dashboards with a **real-time perception-action loop** that continuously monitors workflow health, audits SOPs for structural gaps, and surfaces autonomous remediation opportunities — 24 hours a day.
+## Architecture
 
-[**✨ Features**](#-core-features) · [**🏗️ Architecture**](#-application-architecture) · [**🚀 Get Started**](#-local-installation) · [**📫 Contact**](#-contact)
-
----
-
-</div>
-
-## 📌 Overview
-
-Modern operations teams face a paradox: **more dashboards, less clarity.** OpsManager is designed to act as a tireless AI Chief of Operations, bridging the gap between static data and actionable intelligence.
-
-- **Proactive Monitoring**: Predicts failures before they occur.
-- **SOP Synchronization**: Keeps documentation aligned with real-world workflows.
-- **ROI Optimization**: Automatically identifies and quantifies automation opportunities.
-- **Signal Clarity**: Filters noise to highlight critical operational events.
-
----
-
-## ✨ Core Features
-
-### 📊 Executive Overview — Ops Health Intelligence
-The command center for organizational health. Provides a real-time snapshot of:
-- **Ops Health Score**: A composite metric tracking task throughput, bottleneck frequency, and automation coverage.
-- **Analyzed Tasks**: Live counter of workflows processed by the AI engine.
-- **Bottleneck Trends**: Trend lines exposing recurring friction points across teams.
-- **Efficiency Delta**: Calculated efficiency gain vs. baseline, updated continuously.
-
-### 🧠 SOP Intelligence Engine
-A structural audit system that goes beyond document review:
-- **Redundancy Detection**: Identifies duplicated steps across Standard Operating Procedures.
-- **Communication Gap Analysis**: Flags handoff points with no clear owner or escalation path.
-- **Structural Scoring**: Every SOP gets a clarity and efficiency score, prioritizing which to fix first.
-- **Auto-Suggestions**: Proposes specific rewrites and consolidations to improve process quality.
-
-### 🛰️ Stream Monitor — Real-Time Workflow Surveillance
-A live operational feed that acts like radar for your workflows:
-- **Live Event Stream**: Continuous feed of workflow state transitions, updated in real time.
-- **Anomaly Detection**: Flags deviations from expected flow patterns before they become incidents.
-- **"Live Engine" Simulation**: A built-in simulation mode for testing the system without live data.
-- **Flow Health Indicators**: Per-stream status badges (Healthy / Degraded / Critical).
-
-### ⚡ Automation Lab — Self-Healing Workflow Generator
-The proactive intelligence layer that identifies automation opportunities:
-- **AI-Generated Suggestions**: Context-aware automation recommendations ranked by impact.
-- **ROI Projections**: Each suggestion includes estimated time saved per week and implementation cost.
-- **Priority Matrix**: Suggestions sorted by effort-to-impact ratio for fast decision-making.
-
----
-
-## 🛠️ Tech Stack
-
-| Category | Technology | Purpose |
-|---|---|---|
-| **Frontend** | React 18, TypeScript | Type-safe, component-driven UI |
-| **Styling** | Tailwind CSS | Modern, responsive design system |
-| **Animation** | Framer Motion | Smooth, physics-based transitions |
-| **Icons** | Lucide React | Clean, scalable vector icons |
-| **Build Tool** | Vite | Ultra-fast development and bundling |
-
----
-
-## 🏗️ Application Architecture
-
-OpsManager is built with a modular architecture to ensure scalability and maintainability:
-
-```
-OpsManager Application
-│
-├── 🧩 App.tsx                # Root container - Layout & Navigation
-│   ├── 📊 Executive Overview # Telemetry & Health Metrics
-│   ├── 🧠 SOPAnalysis       # Process audit engine
-│   ├── 🛰️ WorkflowMonitor   # Real-time event surveillance
-│   └── ⚙️ Settings          # Platform configurations
-├── 🎨 index.css              # Global design tokens
-└── 🔧 tailwind.config.js     # Custom theme definitions
+```mermaid
+flowchart LR
+    subgraph ui[UI · src/components]
+        D[Dashboard]
+        S[SOPAnalysis]
+        W[WorkflowMonitor]
+        C[Settings]
+    end
+    A[App<br/>tabs · search · toasts] --> D & S & W & C
+    A -->|useFindings| H[hooks<br/>useEventFeed · useFindings · matches]
+    W -->|useEventFeed| H
+    D & S & W & C -->|useDataSource| X[(DataSource<br/>interface)]
+    H --> X
+    X --- SIM[simulation.ts<br/>catalogues · seeded RNG · timers<br/>status.mode = simulation]
+    X -. would implement .- API[a real backend<br/>status.mode = live]
+    classDef ghost stroke-dasharray: 4 4,fill:#f8fafc,color:#64748b
+    class API ghost
 ```
 
----
+### What happens on the Stream Monitor
 
-## 🚀 Local Installation
+```mermaid
+sequenceDiagram
+    autonumber
+    participant M as WorkflowMonitor
+    participant H as useEventFeed
+    participant S as DataSource (simulation)
+    M->>H: useEventFeed(source, 8)
+    H->>S: getInitialEvents()
+    S-->>H: 3 events
+    H->>S: subscribeEvents(cb)
+    loop every eventIntervalMs (4 s)
+        S->>S: rng → user, action, latency, Warning?
+        S-->>H: cb(event{id: counter, time: clock})
+        H-->>M: [newest, …] capped at 8
+    end
+    M->>H: unmount
+    H->>S: unsubscribe (clearInterval)
+```
 
-### Prerequisites
-- **Node.js** `18+`
-- **npm** `9+`
-
-### Setup Instructions
+## Getting started
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/daniellopez882/AI-Operations-Manager-Agent.git
-cd AI-Operations-Manager-Agent
-
-# 2. Install dependencies
-npm install
-
-# 3. Start development server
-npm run dev
+npm ci
+npm run dev        # http://localhost:5173
+npm test           # vitest
+npm run lint && npm run typecheck && npm run build
 ```
 
-The application will be accessible at `http://localhost:5173`.
+### Container
 
----
+```bash
+docker build -t ops-manager .
+docker run --rm -p 8080:8080 ops-manager      # nginx, uid 10001, /healthz
+```
 
-## 🗺️ Roadmap
+`nginx.conf` serves the SPA fallback and sets `Content-Security-Policy`,
+`X-Frame-Options`, `X-Content-Type-Options` and `Referrer-Policy`;
+`netlify.toml` sets the same headers for Netlify.
 
-- [x] High-fidelity glassmorphism UI
-- [x] Simulated real-time workflow engine
-- [x] SOP structural scoring system
-- [ ] WebSocket integration for live data
-- [ ] LLM-powered natural language SOP analysis
-- [ ] Multi-tenant workspace support
+## Screens
 
----
+| Screen | Shows | Controls |
+|---|---|---|
+| Executive Overview | Four stat cards, bottlenecks, automation suggestions | The search box filters the lists; "Global Scan" is disabled |
+| SOP Intelligence | Three procedures with scores; a detail panel | "Simulate audit" is a two-second delay that changes nothing and says so; import/apply are disabled |
+| Stream Monitor | A simulated event feed (newest first, capped at 8) and illustrative health figures | "Execute Strategy" is disabled |
+| System Config | What a settings page would hold, described truthfully | "Reset Agent" is disabled |
 
-## 🤝 Contributing
+Every disabled control carries the title *Not available in this prototype*.
 
-We welcome contributions! Please follow these steps:
+## What changed, and why
 
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/NewFeature`).
-3. Commit your changes (`git commit -m 'Add some NewFeature'`).
-4. Push to the branch (`git push origin feature/NewFeature`).
-5. Open a Pull Request.
+| # | Defect | Effect |
+|--:|---|---|
+| 1 | README and UI claimed an autonomous AI platform, model hybrids and 15 integrations | None existed; the code makes no network request ([ADR 0002](docs/adr/0002-say-what-it-is.md)) |
+| 2 | Catalogues and timers inline in components; ids from `Date.now()` | Untestable; nothing said it was simulated ([ADR 0001](docs/adr/0001-a-data-source-seam.md)) |
+| 3 | `AnimatePresence mode="wait"` had two children (the tab view and the toast container) | framer-motion warned *"attempting to animate multiple children … mode is set to wait … odd visual behaviour"* on every render — captured from the original before the change |
+| 4 | `"lint": "eslint …"` with no ESLint configuration in the repository | `npm run lint` failed with *couldn't find a configuration file*; unused imports went unnoticed |
+| 5 | The grain overlay was `url('https://grainy-gradients.vercel.app/noise.svg')` | Every page load fetched an asset from an unrelated third-party site |
+| 6 | Sidebar width `w-68` | Not a Tailwind class; the built CSS had no such rule, so the sidebar had no width |
+| 7 | `npm audit`: 10 high advisories in the lockfile | `npm audit fix` and Vite 6 bring it to zero; CI keeps it there |
+| 8 | Seven controls looked live and did nothing | Disabled, with a title that says so; the search box now filters |
+| 9 | Toast dismissals were `setTimeout`s left running after unmount | Cleared on unmount; the audit delay likewise |
+| 10 | README linked `./LICENSE`, which did not exist | Added (MIT) |
 
----
+## Design notes
 
-## 📫 Contact
+| Record | Decision |
+|---|---|
+| [ADR 0001](docs/adr/0001-a-data-source-seam.md) | A `DataSource` seam; the simulation is its only implementation |
+| [ADR 0002](docs/adr/0002-say-what-it-is.md) | The UI and README describe what exists |
+| [Threat model](docs/threat-model.md) | Third-party runtime resources, headers, toolchain advisories, container user |
 
-**Daniel Lopez**  
-Email: [daniellopezorta39@gmail.com](mailto:daniellopezorta39@gmail.com)  
-GitHub: [@daniellopez882](https://github.com/daniellopez882)
+## Layout
 
----
+```
+src/
+  App.tsx                 tabs, search, toasts (outside the tab presence)
+  components/             Dashboard · SOPAnalysis · WorkflowMonitor · Settings
+  lib/data.ts             types and the DataSource interface
+  lib/simulation.ts       the in-browser simulation (seeded RNG, injectable clock)
+  lib/hooks.ts            useEventFeed · useFindings · matches
+  lib/DataSourceContext   provider + hook
+  test/                   vitest setup, a hand-driven DataSource harness
+nginx.conf · Dockerfile · netlify.toml · .github/workflows/ci.yml · docs/
+```
 
-## 📄 License
+## Limits
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- It is a prototype UI. The figures are illustrative and labelled as such.
+- Fonts are still loaded from Google Fonts (the one remaining external
+  resource; see the threat model).
 
-<div align="center">
+## Licence
 
-Built with ❤️ by **daniellopez882**
-
-</div>
+MIT — see [LICENSE](LICENSE).
