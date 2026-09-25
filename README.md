@@ -10,12 +10,7 @@ A front-end prototype of an operations dashboard: an executive overview,
 an SOP scoring screen, a live-looking event feed, and a settings page —
 React 18, TypeScript, Tailwind, Framer Motion, built with Vite.
 
-> **What it is not.** There is no backend, no model and no integration.
-> Every number on screen is generated in the browser by
-> [`src/lib/simulation.ts`](src/lib/simulation.ts), and the page says so.
-> The previous README described a "24/7 Autonomous Workflow Intelligence
-> Platform" with a "real-time perception-action loop"; `package.json` has no
-> HTTP client and no model SDK. See [ADR 0002](docs/adr/0002-say-what-it-is.md).
+
 
 ## At a glance
 
